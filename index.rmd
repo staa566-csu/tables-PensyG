@@ -21,7 +21,6 @@ library(readr)
 library(dplyr)
 library(tidyverse)
 library(reactable)
-library(DT)
 ```
 
 
@@ -71,14 +70,19 @@ tbl_happy <- happiness %>%
          `Explained by: Generosity`,
          `Explained by: Perceptions of corruption`) %>%
   
-  # make table with custom column names
-  reactable(columns = list(
+  reactable(
+    # make default settings for all columns
+    defaultColDef = colDef(
+      headerStyle = list(fontWeight = 750),
+      align = "center",
+      format = colFormat(separators = TRUE)
+    ),
+    
+    # customize column names
+    columns = list(
     RANK = colDef(name = "Ranking", align = "center"),
-    `Happiness score` = colDef(format = colFormat(separators = TRUE)),
-    `Explained by: GDP per capita`= colDef(name="GDP per capita",
-                      format = colFormat(separators = TRUE)),
-    `Explained by: Social support`= colDef(name = "Social Support",
-                      format = colFormat(separators = TRUE)),
+    `Explained by: GDP per capita`= colDef(name="GDP per capita"),
+    `Explained by: Social support`= colDef(name = "Social Support"),
     `Explained by: Healthy life expectancy`= 
         colDef(name = "Healthy Life Expectancy"),
     `Explained by: Freedom to make life choices` = 
@@ -87,10 +91,17 @@ tbl_happy <- happiness %>%
     `Explained by: Perceptions of corruption` =
         colDef(name = "Perceptions of Corruption")
   ),
+  columnGroups = list(
+    colGroup(name = "Explained by",columns=c("Explained by: GDP per capita",
+         "Explained by: Social support",
+         "Explained by: Healthy life expectancy",
+         "Explained by: Freedom to make life choices", 
+         "Explained by: Generosity",
+         "Explained by: Perceptions of corruption"))),
   searchable = TRUE,
   showPageSizeOptions = TRUE,
   striped = TRUE,
-  style = list(fontSize = "1.5rem"),
+  style = list(fontSize = "1rem"),
   defaultSorted = "RANK")
 ```
 
